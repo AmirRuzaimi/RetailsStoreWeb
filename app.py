@@ -8,29 +8,33 @@ st.set_page_config(
     initial_sidebar_state="expanded",
 )
 
-# Custom CSS for Sleek Modern Retail UI & Smooth Transitions
+# Custom CSS for Sleek Retail UI, Background Pattern & Smooth Animations
 st.markdown(
     """
     <style>
-    /* Global Page Fade-in Animation */
+    /* Global Page & Background Pattern (Subtle Tech Grid) */
     .stApp {
-        animation: fadeIn 0.6s cubic-bezier(0.16, 1, 0.3, 1);
+        background-color: #fafbfc;
+        background-image: radial-gradient(#d1d5db 1px, transparent 1px);
+        background-size: 28px 28px;
+        animation: pageFadeIn 0.6s cubic-bezier(0.16, 1, 0.3, 1);
     }
 
-    @keyframes fadeIn {
-        0% { opacity: 0; transform: translateY(8px); }
+    @keyframes pageFadeIn {
+        0% { opacity: 0; transform: translateY(12px); }
         100% { opacity: 1; transform: translateY(0); }
     }
 
-    /* Sleek Clean Hero Banner */
+    /* Sleek Dark Minimalist Hero Banner */
     .hero-banner {
-        background: linear-gradient(135deg, #111111 0%, #2c2c2c 100%);
+        background: linear-gradient(135deg, #0f172a 1e%, #1e293b 100%);
         color: white;
-        padding: 50px 30px;
-        border-radius: 14px;
+        padding: 55px 30px;
+        border-radius: 16px;
         text-align: center;
         margin-bottom: 30px;
-        box-shadow: 0 10px 30px rgba(0, 0, 0, 0.08);
+        box-shadow: 0 12px 32px rgba(15, 23, 42, 0.15);
+        border: 1px solid rgba(255, 255, 255, 0.1);
     }
 
     .hero-banner h1 {
@@ -43,36 +47,44 @@ st.markdown(
 
     .hero-banner p {
         font-size: 1.15rem;
-        color: #a0a0a0;
+        color: #94a3b8;
         margin-top: 10px;
     }
 
-    /* Product Card Styling */
+    /* Product Card with Smooth Directional Hover & Entrance */
     .product-card {
         background-color: #ffffff;
-        border-radius: 12px;
-        padding: 15px;
-        border: 1px solid #eaeaea;
-        transition: all 0.3s ease;
-        margin-bottom: 20px;
+        border-radius: 14px;
+        padding: 16px;
+        border: 1px solid #e2e8f0;
+        box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.02);
+        transition: all 0.35s cubic-bezier(0.16, 1, 0.3, 1);
+        margin-bottom: 24px;
+        animation: cardSlideUp 0.5s ease-out;
+    }
+
+    @keyframes cardSlideUp {
+        0% { opacity: 0; transform: translateY(20px); }
+        100% { opacity: 1; transform: translateY(0); }
     }
 
     .product-card:hover {
-        transform: translateY(-4px);
-        box-shadow: 0 12px 24px rgba(0, 0, 0, 0.06);
-        border-color: #d1d1d1;
+        transform: translateY(-6px) scale(1.01);
+        box-shadow: 0 20px 30px -10px rgba(0, 0, 0, 0.08);
+        border-color: #cbd5e1;
     }
 
     /* Custom Category Badges */
     .badge {
         display: inline-block;
-        padding: 4px 10px;
+        padding: 4px 12px;
         font-size: 0.75rem;
         font-weight: 600;
-        color: #333333;
-        background-color: #f1f1f1;
+        color: #0f172a;
+        background-color: #f1f5f9;
         border-radius: 20px;
-        margin-bottom: 8px;
+        margin-bottom: 10px;
+        border: 1px solid #e2e8f0;
     }
     </style>
 """,
@@ -83,14 +95,14 @@ st.markdown(
 if "cart" not in st.session_state:
     st.session_state.cart = []
 
-# Expanded Retail Product Database
+# Expanded Retail Product Database (Properly Focused Product Images)
 PRODUCTS = [
     {
         "id": 1,
         "name": "Heavyweight Oversized Tee",
         "category": "Apparel",
         "price": 69.90,
-        "image": "https://images.unsplash.com/photo-1521572267360-ee0c2909d518?w=500",
+        "image": "https://images.unsplash.com/photo-1583743814966-8936f5b7be1a?w=500",
         "desc": "Premium streetwear fit crafted from heavy combed cotton.",
     },
     {
@@ -159,7 +171,7 @@ PRODUCTS = [
     },
 ]
 
-# Navigation Sidebar
+# Navigation Sidebar with Layered Filters
 st.sidebar.title("🛍️ RetailHub")
 page = st.sidebar.radio("Navigate", ["Storefront", "Shopping Cart", "About Us"])
 
@@ -175,9 +187,11 @@ if page == "Storefront":
         unsafe_allow_html=True,
     )
 
-    # Category Filter Bar
+    # Layered Category Filter Options
+    st.sidebar.markdown("---")
+    st.sidebar.subheader("🗂️ Category Layers")
     categories = ["All"] + sorted(list(set(p["category"] for p in PRODUCTS)))
-    selected_category = st.selectbox("Filter Collection", categories)
+    selected_category = st.sidebar.selectbox("Filter Collection", categories)
 
     filtered_products = (
         PRODUCTS
@@ -185,9 +199,10 @@ if page == "Storefront":
         else [p for p in PRODUCTS if p["category"] == selected_category]
     )
 
+    st.write(f"Showing **{len(filtered_products)}** items in *{selected_category}*")
     st.write("")
 
-    # Display Products in a clean 3-column Grid
+    # Display Products in a clean 3-column Grid with Card Wrappers
     cols = st.columns(3)
     for index, product in enumerate(filtered_products):
         col = cols[index % 3]
