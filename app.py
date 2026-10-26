@@ -8,15 +8,14 @@ st.set_page_config(
     initial_sidebar_state="expanded",
 )
 
-# Custom CSS for Full Dark Mode Theme & High-Contrast Crisp Typography
+# Custom CSS for Pure Solid Dark Theme & High-Contrast Typography
 st.markdown(
     """
     <style>
-    /* Global Page & Main Background (Pure Dark Mode) */
+    /* Global Page & Main Background (Pure Solid Dark - No Dots) */
     .stApp {
         background-color: #0b0f17 !important;
-        background-image: radial-gradient(#1f2937 1.5px, transparent 1.5px) !important;
-        background-size: 24px 24px !important;
+        background-image: none !important;
         color: #f3f4f6 !important;
         animation: fadeIn 0.5s ease-in-out;
     }
@@ -40,7 +39,7 @@ st.markdown(
         text-align: center;
         margin-bottom: 30px;
         box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
-        border: 1px solid #374151;
+        border: 1px solid #1f2937;
     }
 
     .hero-banner h1 {
@@ -57,7 +56,7 @@ st.markdown(
         margin-top: 10px;
     }
 
-    /* Product Card Container (Dark Surface with Crisp Borders) */
+    /* Product Card Container (Clean Dark Surface) */
     .product-card {
         background-color: #111827 !important;
         border-radius: 14px;
@@ -86,13 +85,13 @@ st.markdown(
     .product-price {
         font-size: 1.1rem;
         font-weight: 600;
-        color: #38bdf8 !important; /* Bright cyan accent for visibility */
+        color: #38bdf8 !important;
         margin-bottom: 8px;
     }
 
     .product-desc {
         font-size: 0.9rem;
-        color: #d1d5db !important; /* High contrast silver text */
+        color: #d1d5db !important;
         line-height: 1.4;
         margin-bottom: 12px;
     }
