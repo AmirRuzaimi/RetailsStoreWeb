@@ -8,14 +8,16 @@ st.set_page_config(
     initial_sidebar_state="expanded",
 )
 
-# Custom CSS for Sleek Retail UI, Background Pattern, and Smooth Transitions
+# Custom CSS for Full Dark Mode Theme & High-Contrast Crisp Typography
 st.markdown(
     """
     <style>
+    /* Global Page & Main Background (Pure Dark Mode) */
     .stApp {
-        background-color: #f8fafc;
-        background-image: radial-gradient(#cbd5e1 1.2px, transparent 1.2px);
-        background-size: 24px 24px;
+        background-color: #0b0f17 !important;
+        background-image: radial-gradient(#1f2937 1.5px, transparent 1.5px) !important;
+        background-size: 24px 24px !important;
+        color: #f3f4f6 !important;
         animation: fadeIn 0.5s ease-in-out;
     }
 
@@ -24,66 +26,110 @@ st.markdown(
         to { opacity: 1; transform: translateY(0); }
     }
 
+    /* Force All Main Text & Headers to Bright High-Contrast White */
+    h1, h2, h3, h4, h5, h6, p, span, label, div {
+        color: #f9fafb !important;
+    }
+
+    /* Hero Banner (Sleek Dark Slate Gradient) */
     .hero-banner {
-        background: linear-gradient(135deg, #0f172a 0%, #1e293b 100%);
-        color: white;
+        background: linear-gradient(135deg, #111827 0%, #1f2937 100%);
+        color: #ffffff !important;
         padding: 50px 30px;
         border-radius: 16px;
         text-align: center;
         margin-bottom: 30px;
-        box-shadow: 0 10px 25px rgba(15, 23, 42, 0.15);
-        border: 1px solid rgba(255, 255, 255, 0.1);
+        box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+        border: 1px solid #374151;
     }
 
     .hero-banner h1 {
         margin: 0;
         font-size: 2.7rem;
         font-weight: 800;
-        color: #ffffff;
+        color: #ffffff !important;
         letter-spacing: -0.5px;
     }
 
     .hero-banner p {
         font-size: 1.1rem;
-        color: #94a3b8;
+        color: #9ca3af !important;
         margin-top: 10px;
     }
 
+    /* Product Card Container (Dark Surface with Crisp Borders) */
     .product-card {
-        background-color: #ffffff;
-        border-radius: 12px;
-        padding: 16px;
-        border: 1px solid #e2e8f0;
-        box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.02);
+        background-color: #111827 !important;
+        border-radius: 14px;
+        padding: 18px;
+        border: 1px solid #1f2937;
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.4);
         transition: all 0.3s ease;
         margin-bottom: 20px;
     }
 
     .product-card:hover {
         transform: translateY(-5px);
-        box-shadow: 0 12px 24px -6px rgba(0, 0, 0, 0.08);
-        border-color: #cbd5e1;
+        box-shadow: 0 12px 24px rgba(0, 0, 0, 0.7);
+        border-color: #374151;
     }
 
+    /* Product Subheaders & Prices */
+    .product-title {
+        font-size: 1.25rem;
+        font-weight: 700;
+        color: #ffffff !important;
+        margin-top: 8px;
+        margin-bottom: 4px;
+    }
+
+    .product-price {
+        font-size: 1.1rem;
+        font-weight: 600;
+        color: #38bdf8 !important; /* Bright cyan accent for visibility */
+        margin-bottom: 8px;
+    }
+
+    .product-desc {
+        font-size: 0.9rem;
+        color: #d1d5db !important; /* High contrast silver text */
+        line-height: 1.4;
+        margin-bottom: 12px;
+    }
+
+    /* Custom Category Badges */
     .badge {
         display: inline-block;
-        padding: 4px 10px;
+        padding: 4px 12px;
         font-size: 0.75rem;
-        font-weight: 600;
-        color: #0f172a;
-        background-color: #f1f5f9;
+        font-weight: 700;
+        color: #38bdf8 !important;
+        background-color: #1e293b;
         border-radius: 20px;
         margin-bottom: 8px;
-        border: 1px solid #e2e8f0;
+        border: 1px solid #334155;
+    }
+
+    /* Expandable Specification Box Fix for Dark Mode */
+    .stExpander {
+        background-color: #1f2937 !important;
+        border-radius: 8px !important;
+        border: 1px solid #374151 !important;
+    }
+
+    .stExpander p, .stExpander li {
+        color: #e5e7eb !important;
     }
     </style>
-    """,
+""",
     unsafe_allow_html=True,
 )
 
+# Initialize Session State for Cart
 if "cart" not in st.session_state:
     st.session_state.cart = []
 
+# Product Database
 PRODUCTS = [
     {
         "id": 1,
@@ -141,9 +187,11 @@ PRODUCTS = [
     },
 ]
 
+# Navigation Sidebar
 st.sidebar.title("🛍️ RetailHub")
 page = st.sidebar.radio("Navigate", ["Storefront", "Shopping Cart", "About Us"])
 
+# --- PAGE 1: STOREFRONT ---
 if page == "Storefront":
     st.markdown(
         """
@@ -176,19 +224,21 @@ if page == "Storefront":
             st.markdown('<div class="product-card">', unsafe_allow_html=True)
             st.image(product["image"], use_container_width=True)
             st.markdown(f'<span class="badge">{product["category"]}</span>', unsafe_allow_html=True)
-            st.subheader(product["name"])
-            st.write(f"**RM {product['price']:.2f}**")
-            st.caption(product["desc"])
+            st.markdown(f'<div class="product-title">{product["name"]}</div>', unsafe_allow_html=True)
+            st.markdown(f'<div class="product-price">RM {product["price"]:.2f}</div>', unsafe_allow_html=True)
+            st.markdown(f'<div class="product-desc">{product["desc"]}</div>', unsafe_allow_html=True)
 
-            # Detailed specifications and story dropdown tab
+            # Detailed specifications and story tab
             with st.expander("📖 Detailed Specifications & Story"):
                 st.markdown(product["specs"])
 
+            st.write("")
             if st.button(f"Add to Cart 🛒", key=f"btn_{product['id']}"):
                 st.session_state.cart.append(product)
                 st.toast(f"Added **{product['name']}** to cart!", icon="✅")
             st.markdown("</div>", unsafe_allow_html=True)
 
+# --- PAGE 2: SHOPPING CART ---
 elif page == "Shopping Cart":
     st.title("🛒 Your Shopping Cart")
 
@@ -217,11 +267,12 @@ elif page == "Shopping Cart":
             st.success("Order placed successfully! Thank you for shopping with RetailHub.")
             st.session_state.cart = []
 
+# --- PAGE 3: ABOUT US ---
 elif page == "About Us":
     st.title("ℹ️ About RetailHub")
     st.write(
         """
-        RetailHub is a contemporary lifestyle and retail storefront inspired by clean aesthetics, premium product curation, and seamless user experiences. 
+        RetailHub is a contemporary lifestyle and retail storefront inspired by clean dark-mode aesthetics, premium product curation, and seamless user experiences. 
         We bridge the gap between quality everyday goods and effortless online shopping.
     """
     )
